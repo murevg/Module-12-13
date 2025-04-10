@@ -3,6 +3,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private GroundDetector _groundDetector;
 
     private string _horizontalAxisName = "Horizontal";
     private string _verticalAxisName = "Vertical";
@@ -13,13 +14,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _moveForce;
 
-    public int oranges;
-
     private float _deadZone = 0.1f;
     private float xInput;
     private float yInput;
     private bool _isJumpKeyPressed;
-    private bool _isOnGround;
 
     private void Awake()
     {
@@ -31,7 +29,7 @@ public class Ball : MonoBehaviour
         xInput = Input.GetAxisRaw(_horizontalAxisName);
         yInput = Input.GetAxisRaw(_verticalAxisName);
 
-        if (Input.GetKeyDown(_jumpKey) && _isOnGround)
+        if (Input.GetKeyDown(_jumpKey) && _groundDetector.IsGrounded)
         {
             _isJumpKeyPressed = true;
         }
@@ -67,24 +65,7 @@ public class Ball : MonoBehaviour
         {
             _rigidBody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             _isJumpKeyPressed = false;
-            _isOnGround = false;
+            _groundDetector.ForceUnground();
         }
-    }
-
-    public void AddOranges(int value)
-    {
-        oranges += value;
-
-        Debug.Log(oranges);
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        _isOnGround = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        _isOnGround = false;
     }
 }

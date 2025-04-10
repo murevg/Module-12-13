@@ -18,6 +18,6 @@ public class Rotator : MonoBehaviour
         float offsetY = Mathf.Sin(Time.time * _frequency) * _amplitude;
         transform.position = _currentPosition + new Vector3(0, offsetY, 0);
 
-        transform.Rotate(Vector3.up * _rotationSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime);
     }
 }
